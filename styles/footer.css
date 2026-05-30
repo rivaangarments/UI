@@ -1,0 +1,123 @@
+.footer {
+  background:
+    radial-gradient(circle at 0 0, rgba(212, 169, 90, 0.18), transparent 26rem),
+    linear-gradient(135deg, #090909, #17110b);
+  color: rgba(255, 255, 255, 0.84);
+  border-top: 1px solid rgba(212, 169, 90, 0.38);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.45fr repeat(3, 0.75fr) 1.35fr;
+  gap: 34px;
+  padding: 44px 0 28px;
+}
+
+.footer-logo .logo-crop {
+  width: 190px;
+  height: 72px;
+}
+
+.footer-brand p,
+.newsletter-mini p {
+  max-width: 280px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.footer h3 {
+  margin: 6px 0 16px;
+  color: var(--color-white);
+  font-size: 0.83rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer a {
+  display: block;
+  margin: 11px 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.88rem;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.footer a:hover {
+  color: var(--color-gold);
+  transform: translateX(3px);
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+}
+
+.socials a {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(212, 169, 90, 0.35);
+  border-radius: 50%;
+}
+
+.newsletter-mini form {
+  display: flex;
+  height: 46px;
+  border: 1px solid rgba(212, 169, 90, 0.38);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.newsletter-mini input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-white);
+  outline: 0;
+}
+
+.newsletter-mini button {
+  width: 48px;
+  border: 0;
+  background: var(--color-gold);
+  color: var(--color-black);
+}
+
+.payment-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.payment-pills span {
+  border-radius: 5px;
+  background: #fff;
+  color: #111;
+  padding: 5px 9px;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 0 22px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

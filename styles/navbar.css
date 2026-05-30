@@ -1,0 +1,273 @@
+.announcement-bar {
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: 0.78rem;
+}
+
+.announcement-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  min-height: 34px;
+}
+
+.announcement-inner span:not(:last-of-type)::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin-left: 22px;
+  vertical-align: -2px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.announcement-inner span:first-child {
+  color: var(--color-gold);
+}
+
+.announcement-inner a {
+  margin-left: auto;
+  color: var(--color-white);
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(212, 169, 90, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 76px;
+  gap: 20px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: fit-content;
+  margin-left: -10px;
+}
+
+.logo-crop {
+  display: block;
+  overflow: hidden;
+  background: transparent;
+}
+
+.logo-crop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-light img {
+  object-position: 50% 100%;
+}
+
+.logo-dark img {
+  object-position: 50% 0;
+}
+
+.brand .logo-crop {
+  width: 170px;
+  height: 58px;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2vw, 28px);
+  flex: 1;
+}
+
+.desktop-nav a {
+  position: relative;
+  font-size: 0.9rem;
+  font-weight: 650;
+  transition: color 180ms ease;
+}
+
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--color-gold);
+  transition: transform 180ms ease;
+}
+
+.desktop-nav a:hover {
+  color: var(--color-gold-dark);
+}
+
+.desktop-nav a:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-icon {
+  position: relative;
+  display: inline-grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-black);
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.nav-icon:hover {
+  color: var(--color-gold-dark);
+  background: rgba(212, 169, 90, 0.13);
+  transform: translateY(-1px);
+}
+
+.cart-badge span {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 99px;
+  background: var(--color-gold);
+  color: var(--color-black);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.hamburger {
+  display: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.mobile-menu.is-open {
+  pointer-events: auto;
+}
+
+.mobile-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.mobile-menu.is-open .mobile-scrim {
+  opacity: 1;
+}
+
+.mobile-menu-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: min(84vw, 360px);
+  height: 100%;
+  padding: 24px;
+  background: #fffaf3;
+  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.18);
+  transform: translateX(102%);
+  transition: transform 260ms ease;
+}
+
+.mobile-menu.is-open .mobile-menu-panel {
+  transform: translateX(0);
+}
+
+.close-menu {
+  margin-left: auto;
+}
+
+.mobile-logo {
+  margin: 18px 0 28px;
+  color: var(--color-black);
+}
+
+.mobile-logo .logo-crop {
+  width: 220px;
+  height: 86px;
+}
+
+.mobile-menu nav,
+.mobile-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.mobile-menu nav a,
+.mobile-actions a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--color-line);
+  padding: 14px 0;
+  font-weight: 750;
+}
+
+@media (max-width: 980px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: inline-grid;
+  }
+}
+
+@media (max-width: 640px) {
+  .announcement-inner {
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 16px;
+    white-space: nowrap;
+  }
+
+  .announcement-inner a {
+    display: none;
+  }
+
+  .nav-inner {
+    min-height: 66px;
+  }
+
+  .nav-actions .nav-icon:nth-child(1),
+  .nav-actions .nav-icon:nth-child(2) {
+    display: none;
+  }
+
+  .brand .logo-crop {
+    width: 136px;
+    height: 48px;
+  }
+
+  .brand {
+    margin-left: -4px;
+  }
+}
