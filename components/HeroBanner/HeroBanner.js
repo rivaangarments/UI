@@ -1,19 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Button from "@/components/Button/Button";
-import { fetchHeroBanner } from "@/lib/firestore/banners";
+import { fetchHeroBanners } from "@/lib/firestore/banners";
 
 export default function HeroBanner() {
-  const [banner, setBanner] = useState(null);
+  const [banners, setBanners] = useState([]);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
     let mounted = true;
-    fetchHeroBanner()
-      .then((data) => {
+    fetchHeroBanners()
+      .then((items) => {
         if (!mounted) return;
-        if (data) setBanner(data);
+        const list = Array.isArray(items) ? items : [];
+        setBanners(list);
+        setActive(0);
       })
       .catch((err) => {
         // Keep UI stable with the local fallback hero image,
@@ -29,16 +32,39 @@ export default function HeroBanner() {
     };
   }, []);
 
-  const kicker = banner?.kicker || "New Collection";
-  const title = banner?.title || "Elevate Your";
-  const highlight = banner?.highlight || "Style Everyday";
-  const subtitle = banner?.subtitle || "Premium quality garments crafted for comfort, ceremony, and modern confidence.";
-  const primaryCtaLabel = banner?.primaryCtaLabel || "Shop Now";
-  const primaryCtaHref = banner?.primaryCtaHref || "/product";
-  const secondaryCtaLabel = banner?.secondaryCtaLabel || "Explore Collection";
-  const secondaryCtaHref = banner?.secondaryCtaHref || "/product?filter=new-arrivals";
-  const imageSrc = banner?.image || "/images/banners/hero.svg";
-  const isSvg = typeof imageSrc === "string" && imageSrc.toLowerCase().endsWith(".svg");
+  useEffect(() => {
+    if (!banners.length) return;
+    if (banners.length <= 1) return;
+    const t = window.setInterval(() => {
+      setActive((idx) => (idx + 1) % banners.length);
+    }, 3000);
+    return () => window.clearInterval(t);
+  }, [banners.length]);
+
+  const banner = banners[active] || null;
+  const fallback = useMemo(
+    () => ({
+      kicker: "New Collection",
+      title: "Elevate Your",
+      highlight: "Style Everyday",
+      subtitle: "Premium quality garments crafted for comfort, ceremony, and modern confidence.",
+      primaryCtaLabel: "Shop Now",
+      primaryCtaHref: "/product",
+      secondaryCtaLabel: "Explore Collection",
+      secondaryCtaHref: "/product?filter=new-arrivals",
+      image: "/images/banners/hero.svg"
+    }),
+    []
+  );
+
+  const kicker = banner?.kicker || fallback.kicker;
+  const title = banner?.title || fallback.title;
+  const highlight = banner?.highlight || fallback.highlight;
+  const subtitle = banner?.subtitle || fallback.subtitle;
+  const primaryCtaLabel = banner?.primaryCtaLabel || fallback.primaryCtaLabel;
+  const primaryCtaHref = banner?.primaryCtaHref || fallback.primaryCtaHref;
+  const secondaryCtaLabel = banner?.secondaryCtaLabel || fallback.secondaryCtaLabel;
+  const secondaryCtaHref = banner?.secondaryCtaHref || fallback.secondaryCtaHref;
 
   return (
     <section className="hero-banner fade-in">
@@ -54,19 +80,38 @@ export default function HeroBanner() {
         </div>
       </div>
       <div className="hero-image">
-        <Image
-          src={imageSrc}
-          alt="Rivaan Garments hero banner"
-          fill
-          priority
-          sizes="(max-width: 800px) 100vw, 60vw"
-          unoptimized={isSvg}
-        />
+        {(banners.length ? banners : [fallback]).map((b, idx) => {
+          const src = b?.image || fallback.image;
+          const isSvg = typeof src === "string" && src.toLowerCase().endsWith(".svg");
+          const visible = idx === (banners.length ? active : 0);
+          return (
+            <div
+              key={b?.id || idx}
+              className={`hero-slide ${visible ? "is-active" : ""}`}
+              aria-hidden={!visible}
+            >
+              <Image
+                src={src}
+                alt="Rivaan Garments hero banner"
+                fill
+                priority={idx === 0}
+                sizes="(max-width: 800px) 100vw, 60vw"
+                unoptimized={isSvg}
+              />
+            </div>
+          );
+        })}
       </div>
-      <div className="hero-dots" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+      <div className="hero-dots" aria-label="Hero banners">
+        {(banners.length ? banners : [fallback]).map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className={`hero-dot ${idx === active ? "is-active" : ""}`}
+            aria-label={`Show banner ${idx + 1}`}
+            onClick={() => setActive(idx)}
+          />
+        ))}
       </div>
     </section>
   );

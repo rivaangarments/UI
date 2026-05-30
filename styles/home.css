@@ -102,7 +102,20 @@
   min-height: 520px;
 }
 
-.hero-image img {
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-slide img {
   /* Show the full banner image from Firebase without cropping */
   object-fit: contain;
   object-position: center;
@@ -117,12 +130,24 @@
   transform: translateX(-50%);
 }
 
-.hero-dots span {
-  width: 8px;
-  height: 8px;
+.hero-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 1px solid rgba(13, 13, 13, 0.18);
   border-radius: 50%;
-  background: var(--color-black);
-  box-shadow: 14px 0 0 var(--color-gold);
+  background: rgba(13, 13, 13, 0.25);
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.hero-dot:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212, 169, 90, 0.6);
+}
+
+.hero-dot.is-active {
+  background: var(--color-gold);
+  border-color: rgba(212, 169, 90, 0.8);
 }
 
 .category-row {

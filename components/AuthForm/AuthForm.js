@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { BadgeCheck, Eye, EyeOff, Gift, Lock, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { BadgeCheck, Eye, EyeOff, Gift, Lock, Mail, Phone, ShieldCheck, UserRound } from "lucide-react";
 import { useState } from "react";
 import Button from "@/components/Button/Button";
 
-const socialProviders = ["Google", "Apple", "Facebook"];
 const benefits = [
   { icon: Gift, title: "Exclusive Collections", text: "Premium styles crafted for every occasion" },
   { icon: ShieldCheck, title: "Secure & Safe", text: "Your data is 100% safe and protected" },
@@ -70,6 +69,12 @@ export default function AuthForm({ type }) {
             <Mail size={18} />
             <input type="email" placeholder="Email Address" />
           </label>
+          {!isLogin && !isForgot ? (
+            <label className="field">
+              <Phone size={18} />
+              <input type="tel" inputMode="numeric" placeholder="Mobile Number" />
+            </label>
+          ) : null}
           {!isForgot ? (
             <label className="field">
               <Lock size={18} />
@@ -100,10 +105,6 @@ export default function AuthForm({ type }) {
         </form>
         {!isForgot ? (
           <>
-            <div className="auth-divider"><span>or continue with</span></div>
-            <div className="social-login">
-              {socialProviders.map((provider) => <button key={provider}>{provider}</button>)}
-            </div>
             <p className="auth-switch">
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
               <Link href={isLogin ? "/register" : "/login"}>{isLogin ? "Register" : "Login"}</Link>
