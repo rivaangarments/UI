@@ -6,6 +6,7 @@ import { Heart, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
 import { getCartCount, onCartChange } from "@/lib/cart/cartStorage";
+import { getWishlistCount, onWishlistChange } from "@/lib/wishlist/wishlistStorage";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,10 +21,19 @@ const navItems = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
 
   useEffect(() => {
     setCartCount(getCartCount());
-    return onCartChange((items) => setCartCount(getCartCount(items)));
+    const offCart = onCartChange((items) => setCartCount(getCartCount(items)));
+
+    setWishlistCount(getWishlistCount());
+    const offWish = onWishlistChange((items) => setWishlistCount(getWishlistCount(items)));
+
+    return () => {
+      offCart();
+      offWish();
+    };
   }, []);
 
   return (
@@ -57,8 +67,9 @@ export default function Navbar() {
             <Link className="nav-icon" href="/profile" aria-label="Profile">
               <UserRound size={20} />
             </Link>
-            <Link className="nav-icon" href="/wishlist" aria-label="Wishlist">
+            <Link className="nav-icon cart-badge" href="/wishlist" aria-label="Wishlist">
               <Heart size={20} />
+              {wishlistCount ? <span>{wishlistCount}</span> : null}
             </Link>
             <Link className="nav-icon cart-badge" href="/cart" aria-label="Cart">
               <ShoppingBag size={20} />

@@ -5,6 +5,10 @@
   align-items: start;
 }
 
+.cart-layout.is-empty {
+  grid-template-columns: 1fr;
+}
+
 .cart-header {
   display: flex;
   align-items: flex-end;
@@ -41,6 +45,27 @@
 .cart-list,
 .summary-card {
   padding: 22px;
+}
+
+.cart-empty {
+  padding: 36px 28px;
+  text-align: center;
+}
+
+.cart-empty h2 {
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+}
+
+.cart-empty p {
+  margin: 0 auto 16px;
+  max-width: 52ch;
+  color: var(--color-muted);
+}
+
+.cart-empty .btn {
+  min-width: 220px;
 }
 
 .cart-item {

@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
-export default function SearchBar({ compact = false }) {
-  const [query, setQuery] = useState("");
+export default function SearchBar({ compact = false, defaultValue = "" }) {
+  const [query, setQuery] = useState(defaultValue);
+
+  useEffect(() => {
+    setQuery(defaultValue);
+  }, [defaultValue]);
 
   return (
     <form className={`search-bar ${compact ? "search-compact" : ""}`} action="/search">

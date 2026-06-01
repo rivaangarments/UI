@@ -22,6 +22,8 @@ const categories = [
 
 const CONTACT_PHONE = "9680624616";
 const CONTACT_EMAIL = "garmentsrivaan.pvt.ltd@gmail.com";
+const BUSINESS_ADDRESS =
+  "185 Ward No 53, Handipura, Near Hanuman Mandir, Chak 1, Nangal Soosawatan, Jaipur, Amer, Rajasthan, India, 302028";
 
 function Section({ id, title, children }) {
   return (
@@ -95,7 +97,7 @@ export default function AboutPage() {
                 <div className="about-meta luxury-panel">
                   <p><span>Business Name:</span> <b>[Legal Business Name]</b></p>
                   <p><span>GST Number:</span> <b>[GST Number]</b></p>
-                  <p><span>Registered Address:</span> <b>[Business Address]</b></p>
+                  <p><span>Registered Address:</span> <b>{BUSINESS_ADDRESS}</b></p>
                   <p><span>Email:</span> <b><a className="about-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></b></p>
                   <p><span>Phone:</span> <b><a className="about-link" href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a></b></p>
                 </div>
@@ -138,7 +140,7 @@ export default function AboutPage() {
                 <div className="about-meta luxury-panel">
                   <p><span>Phone:</span> <b><a className="about-link" href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a></b></p>
                   <p><span>Email:</span> <b><a className="about-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></b></p>
-                  <p><span>Business Address:</span> <b>[Complete Address]</b></p>
+                  <p><span>Business Address:</span> <b>{BUSINESS_ADDRESS}</b></p>
                   <p>
                     <span>Working Hours:</span>{" "}
                     <b>Monday to Saturday: 10:00 AM to 7:00 PM</b>
@@ -189,7 +191,7 @@ export default function AboutPage() {
                   <li>By using this website, customers agree to comply with all applicable laws and regulations.</li>
                   <li>Product prices, specifications, and availability are subject to change without prior notice.</li>
                   <li>The company reserves the right to refuse or cancel orders in cases of pricing errors, fraudulent transactions, or policy violations.</li>
-                  <li>All disputes shall be subject to the jurisdiction of courts located in <b>[City Name]</b>.</li>
+                  <li>All disputes shall be subject to the jurisdiction of courts located in <b>Rajasthan</b>.</li>
                 </ul>
               </Section>
             </div>

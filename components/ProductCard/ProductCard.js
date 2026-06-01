@@ -3,13 +3,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag, Star } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { addToCart } from "@/lib/cart/cartStorage";
+import { getWishlistItems, onWishlistChange, toggleWishlist } from "@/lib/wishlist/wishlistStorage";
 
 export default function ProductCard({ product }) {
   const hasDiscount = Number(product.price || 0) > Number(product.offerPrice || 0);
   const discountPct = hasDiscount
     ? Math.round(((Number(product.price) - Number(product.offerPrice)) / Number(product.price)) * 100)
     : 0;
+
+  const productId = useMemo(() => String(product.id ?? product.slug ?? ""), [product.id, product.slug]);
+  const [wished, setWished] = useState(false);
+
+  useEffect(() => {
+    // Initialize + keep in sync (navbar/wishlist page/product cards).
+    const compute = (items) => {
+      const list = Array.isArray(items) ? items : getWishlistItems();
+      setWished(list.some((it) => String(it?.id ?? "") === productId));
+    };
+    compute(getWishlistItems());
+    return onWishlistChange((items) => compute(items));
+  }, [productId]);
+
   const slugOrId = product.slug || product.id;
   const params = new URLSearchParams();
   if (product.category) params.set("category", String(product.category));
@@ -22,8 +38,16 @@ export default function ProductCard({ product }) {
         <Image src={product.image} alt={product.name} width={420} height={500} />
         {product.tag ? <span className="product-tag">{String(product.tag).toUpperCase()}</span> : null}
       </Link>
-      <button className="icon-float" aria-label={`Add ${product.name} to wishlist`}>
-        <Heart size={18} />
+      <button
+        type="button"
+        className="icon-float"
+        aria-label={wished ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+        onClick={() => {
+          const res = toggleWishlist(product);
+          setWished(res.added);
+        }}
+      >
+        <Heart size={18} fill={wished ? "currentColor" : "none"} />
       </button>
       <div className="product-info">
         <Link href={href}>

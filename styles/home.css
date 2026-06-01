@@ -115,6 +115,19 @@
   transform: translateY(0);
 }
 
+.hero-skeleton {
+  background:
+    linear-gradient(90deg, rgba(248, 245, 239, 0.55), rgba(212, 169, 90, 0.16), rgba(248, 245, 239, 0.55));
+  background-size: 260% 100%;
+  animation: heroShimmer 1.05s ease-in-out infinite;
+  border-radius: var(--radius-lg);
+}
+
+@keyframes heroShimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
+}
+
 .hero-slide img {
   /* Show the full banner image from Firebase without cropping */
   object-fit: contain;
