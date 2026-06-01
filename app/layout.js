@@ -1,5 +1,6 @@
 import "./globals.css";
 import FirebaseAnalytics from "@/components/FirebaseAnalytics/FirebaseAnalytics";
+import AuthGate from "@/components/AuthGate/AuthGate";
 
 export const metadata = {
   title: "Rivaan Garments | Premium Fashion",
@@ -10,7 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {children}
+        <AuthGate>{children}</AuthGate>
         <FirebaseAnalytics />
       </body>
     </html>
