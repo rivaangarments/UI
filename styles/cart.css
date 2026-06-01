@@ -82,7 +82,7 @@
   border: 1px solid rgba(212, 169, 90, 0.3);
   border-radius: 50%;
   background: #fff;
-  color: var(--color-gold-dark);
+  color: #ad3028;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
 }
 

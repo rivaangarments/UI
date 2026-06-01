@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronRight, Heart, Minus, Plus, ShieldCheck, Truck, RotateCcw, Wallet } from "lucide-react";
+import { ChevronRight, Minus, Plus, ShieldCheck, Trash2, Truck, RotateCcw, Wallet } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import Button from "@/components/Button/Button";
 import { products } from "@/data/products";
-import { getCartItems, removeCartItem, updateCartItemQty } from "@/lib/cart/cartStorage";
+import { getCartCount, getCartItems, removeCartItem, updateCartItemQty } from "@/lib/cart/cartStorage";
 
 export default function CartPage() {
   const [items, setItems] = useState([]);
@@ -17,6 +17,7 @@ export default function CartPage() {
     setItems(stored.length ? stored : products.slice(0, 4).map((p) => ({ ...p, qty: 1, selectedColor: p.colors?.[0], selectedSize: p.sizes?.[0] })));
   }, []);
 
+  const itemCount = useMemo(() => getCartCount(items), [items]);
   const subtotal = useMemo(
     () => items.reduce((sum, item) => sum + Number(item.offerPrice || 0) * Number(item.qty || 1), 0),
     [items]
@@ -32,7 +33,7 @@ export default function CartPage() {
         <div className="container cart-header">
           <div>
             <h1>Your Shopping Cart</h1>
-            <p>{items.length} items</p>
+            <p>{itemCount} items</p>
           </div>
           <a className="continue-shopping" href="/product">
             Continue Shopping <ChevronRight size={16} />
@@ -41,7 +42,10 @@ export default function CartPage() {
         <div className="container cart-layout">
           <section className="cart-list luxury-panel">
             {items.map((item, idx) => (
-              <article className="cart-item" key={item.id}>
+              <article
+                className="cart-item"
+                key={`${String(item.id)}::${String(item.selectedColor || "")}::${String(item.selectedSize || "")}`}
+              >
                 <Image src={item.image} alt={item.name} width={118} height={132} />
                 <div>
                   <h3>{item.name}</h3>
@@ -81,7 +85,7 @@ export default function CartPage() {
                     setItems(next.length ? next : []);
                   }}
                 >
-                  <Heart size={18} />
+                  <Trash2 size={18} />
                 </button>
               </article>
             ))}

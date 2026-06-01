@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag, Star } from "lucide-react";
+import { addToCart } from "@/lib/cart/cartStorage";
 
 export default function ProductCard({ product }) {
   const hasDiscount = Number(product.price || 0) > Number(product.offerPrice || 0);
@@ -36,7 +39,24 @@ export default function ProductCard({ product }) {
             {product.rating} <Star size={14} fill="currentColor" />
           </span>
         </div>
-        <button className="cart-line">
+        <button
+          type="button"
+          className="cart-line"
+          onClick={() => {
+            addToCart({
+              id: product.id,
+              slug: product.slug || product.id,
+              name: product.name,
+              category: product.category,
+              image: product.image,
+              price: product.price,
+              offerPrice: product.offerPrice,
+              selectedColor: Array.isArray(product.colors) ? String(product.colors[0] || "") : "",
+              selectedSize: Array.isArray(product.sizes) ? String(product.sizes[0] || "") : "",
+              qty: 1
+            });
+          }}
+        >
           <ShoppingBag size={16} />
           Add to Cart
         </button>

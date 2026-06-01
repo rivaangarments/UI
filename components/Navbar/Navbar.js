@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
+import { getCartCount, onCartChange } from "@/lib/cart/cartStorage";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -18,6 +19,12 @@ const navItems = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    setCartCount(getCartCount());
+    return onCartChange((items) => setCartCount(getCartCount(items)));
+  }, []);
 
   return (
     <>
@@ -55,7 +62,7 @@ export default function Navbar() {
             </Link>
             <Link className="nav-icon cart-badge" href="/cart" aria-label="Cart">
               <ShoppingBag size={20} />
-              <span>2</span>
+              {cartCount ? <span>{cartCount}</span> : null}
             </Link>
             <button className="nav-icon hamburger" onClick={() => setOpen(true)} aria-label="Open menu">
               <Menu size={22} />
