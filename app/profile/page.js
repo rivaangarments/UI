@@ -9,6 +9,8 @@ import Button from "@/components/Button/Button";
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { setCartItems } from "@/lib/cart/cartStorage";
+import { setWishlistItems } from "@/lib/wishlist/wishlistStorage";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -38,8 +40,16 @@ export default function ProfilePage() {
   }, []);
 
   async function handleLogout() {
+    // Clear client-side shopping state on logout so counts/items don't linger.
+    setCartItems([]);
+    setWishlistItems([]);
+    try {
+      window.sessionStorage.removeItem("rivaan_pending_cart_add_v1");
+    } catch {
+      // ignore
+    }
     await signOut(auth);
-    router.push("/login");
+    router.replace("/");
   }
 
   const displayName = String(profile?.fullName || user?.displayName || "My Account");

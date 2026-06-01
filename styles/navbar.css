@@ -64,20 +64,22 @@
 .logo-crop img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Ensure the full logo is visible (no cropping). */
+  object-fit: contain;
+  object-position: center;
 }
 
 .logo-light img {
-  object-position: 50% 100%;
+  object-position: center;
 }
 
 .logo-dark img {
-  object-position: 50% 0;
+  object-position: center;
 }
 
 .brand .logo-crop {
-  width: 170px;
-  height: 58px;
+  width: 210px;
+  height: 64px;
 }
 
 .desktop-nav {

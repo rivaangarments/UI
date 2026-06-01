@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BadgeCheck, Eye, EyeOff, Gift, Lock, Mail, Phone, ShieldCheck, UserRound } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/Button/Button";
 import { auth, db } from "@/lib/firebase";
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -18,6 +18,7 @@ const benefits = [
 
 export default function AuthForm({ type }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -41,6 +42,14 @@ export default function AuthForm({ type }) {
 
   function cleanPhone(value) {
     return String(value || "").replace(/[^\d+]/g, "");
+  }
+
+  function safeNext(value) {
+    const next = String(value || "");
+    if (!next.startsWith("/")) return "";
+    // Avoid open redirects.
+    if (next.startsWith("//")) return "";
+    return next;
   }
 
   async function handleSubmit(e) {
@@ -72,7 +81,8 @@ export default function AuthForm({ type }) {
 
       if (isLogin) {
         await signInWithEmailAndPassword(auth, safeEmail, safePassword);
-        router.push("/profile");
+        const next = safeNext(searchParams.get("next"));
+        router.push(next || "/profile");
         return;
       }
 
@@ -120,7 +130,8 @@ export default function AuthForm({ type }) {
         createdAt: serverTimestamp()
       });
 
-      router.push("/profile");
+      const next = safeNext(searchParams.get("next"));
+      router.push(next || "/profile");
     } catch (err) {
       const code = String(err?.code || "");
       if (code === "auth/email-already-in-use") setError("This email is already registered. Please login.");

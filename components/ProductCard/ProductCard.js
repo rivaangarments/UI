@@ -4,10 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/cart/cartStorage";
 import { getWishlistItems, onWishlistChange, toggleWishlist } from "@/lib/wishlist/wishlistStorage";
+import { auth } from "@/lib/firebase";
 
 export default function ProductCard({ product }) {
+  const router = useRouter();
   const hasDiscount = Number(product.price || 0) > Number(product.offerPrice || 0);
   const discountPct = hasDiscount
     ? Math.round(((Number(product.price) - Number(product.offerPrice)) / Number(product.price)) * 100)
@@ -67,7 +70,7 @@ export default function ProductCard({ product }) {
           type="button"
           className="cart-line"
           onClick={() => {
-            addToCart({
+            const payload = {
               id: product.id,
               slug: product.slug || product.id,
               name: product.name,
@@ -78,7 +81,20 @@ export default function ProductCard({ product }) {
               selectedColor: Array.isArray(product.colors) ? String(product.colors[0] || "") : "",
               selectedSize: Array.isArray(product.sizes) ? String(product.sizes[0] || "") : "",
               qty: 1
-            });
+            };
+
+            if (!auth.currentUser) {
+              try {
+                window.sessionStorage.setItem("rivaan_pending_cart_add_v1", JSON.stringify(payload));
+              } catch {
+                // ignore
+              }
+              const next = typeof window !== "undefined" ? `${window.location.pathname}${window.location.search}` : "/product";
+              router.push(`/login?next=${encodeURIComponent(next)}`);
+              return;
+            }
+
+            addToCart(payload);
           }}
         >
           <ShoppingBag size={16} />

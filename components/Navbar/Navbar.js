@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
 import { getCartCount, onCartChange } from "@/lib/cart/cartStorage";
 import { getWishlistCount, onWishlistChange } from "@/lib/wishlist/wishlistStorage";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -22,8 +24,22 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
+    const offAuth = onAuthStateChanged(auth, (u) => {
+      const ok = !!u;
+      setSignedIn(ok);
+      if (!ok) {
+        // Hide badges immediately when logged out.
+        setCartCount(0);
+        setWishlistCount(0);
+      } else {
+        setCartCount(getCartCount());
+        setWishlistCount(getWishlistCount());
+      }
+    });
+
     setCartCount(getCartCount());
     const offCart = onCartChange((items) => setCartCount(getCartCount(items)));
 
@@ -31,6 +47,7 @@ export default function Navbar() {
     const offWish = onWishlistChange((items) => setWishlistCount(getWishlistCount(items)));
 
     return () => {
+      offAuth();
       offCart();
       offWish();
     };
@@ -69,11 +86,11 @@ export default function Navbar() {
             </Link>
             <Link className="nav-icon cart-badge" href="/wishlist" aria-label="Wishlist">
               <Heart size={20} />
-              {wishlistCount ? <span>{wishlistCount}</span> : null}
+              {signedIn && wishlistCount ? <span>{wishlistCount}</span> : null}
             </Link>
             <Link className="nav-icon cart-badge" href="/cart" aria-label="Cart">
               <ShoppingBag size={20} />
-              {cartCount ? <span>{cartCount}</span> : null}
+              {signedIn && cartCount ? <span>{cartCount}</span> : null}
             </Link>
             <button className="nav-icon hamburger" onClick={() => setOpen(true)} aria-label="Open menu">
               <Menu size={22} />

@@ -9,6 +9,7 @@ import ProductDetailsTabs from "@/components/ProductDetailsTabs/ProductDetailsTa
 import { fetchProductsCached } from "@/lib/firestore/products";
 import { addToCart } from "@/lib/cart/cartStorage";
 import { useRouter, useSearchParams } from "next/navigation";
+import { auth } from "@/lib/firebase";
 
 const perks = [
   { icon: Truck, title: "Free Shipping", text: "On orders above ₹999" },
@@ -185,7 +186,7 @@ export default function ProductDetailsClient({ slug }) {
       return;
     }
 
-    addToCart({
+    const payload = {
       id: product.id,
       slug: product.slug,
       name: product.name,
@@ -196,8 +197,25 @@ export default function ProductDetailsClient({ slug }) {
       selectedColor,
       selectedSize,
       qty
-    });
-    router.push(goCheckout ? "/cart" : "/cart");
+    };
+
+    if (!auth.currentUser) {
+      try {
+        window.sessionStorage.setItem("rivaan_pending_cart_add_v1", JSON.stringify(payload));
+      } catch {
+        // ignore
+      }
+      const next = goCheckout
+        ? "/cart"
+        : typeof window !== "undefined"
+          ? `${window.location.pathname}${window.location.search}`
+          : "/product";
+      router.push(`/login?next=${encodeURIComponent(next)}`);
+      return;
+    }
+
+    addToCart(payload);
+    router.push("/cart");
   }
 
   return (
