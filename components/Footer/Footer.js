@@ -30,15 +30,15 @@ export default function Footer() {
         <div>
           <h3>Customer Care</h3>
           <Link href="/profile">Track Order</Link>
-          <Link href="/profile">Returns & Refunds</Link>
-          <Link href="/profile">Shipping Policy</Link>
+          <Link href="/about#return-refund">Returns & Refunds</Link>
+          <Link href="/about#shipping-delivery">Shipping Policy</Link>
           <Link href="/profile">FAQ's</Link>
         </div>
         <div>
           <h3>About Us</h3>
-          <Link href="/">About Rivaan</Link>
-          <Link href="/profile">Privacy Policy</Link>
-          <Link href="/profile">Terms & Conditions</Link>
+          <Link href="/about">About Rivaan</Link>
+          <Link href="/about#privacy-policy">Privacy Policy</Link>
+          <Link href="/about#terms-conditions">Terms & Conditions</Link>
         </div>
         <div className="newsletter-mini">
           <h3>Newsletter</h3>

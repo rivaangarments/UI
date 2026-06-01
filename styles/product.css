@@ -763,6 +763,24 @@
   margin-bottom: 24px;
 }
 
+.profile-mobile {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: -10px 0 18px;
+  color: var(--color-muted);
+  font-weight: 750;
+}
+
+.profile-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-actions .btn {
+  width: 100%;
+}
+
 .profile-panel {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

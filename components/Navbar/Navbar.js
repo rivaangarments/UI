@@ -12,7 +12,8 @@ const navItems = [
   { label: "Women", href: "/product?filter=women" },
   { label: "Kids", href: "/product?filter=kids" },
   { label: "New Arrivals", href: "/product?filter=new-arrivals" },
-  { label: "Sale", href: "/product?filter=sale" }
+  { label: "Sale", href: "/product?filter=sale" },
+  { label: "About Us", href: "/about" }
 ];
 
 export default function Navbar() {

@@ -4,7 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { BadgeCheck, Eye, EyeOff, Gift, Lock, Mail, Phone, ShieldCheck, UserRound } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Button from "@/components/Button/Button";
+import { auth, db } from "@/lib/firebase";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 const benefits = [
   { icon: Gift, title: "Exclusive Collections", text: "Premium styles crafted for every occasion" },
@@ -13,7 +17,19 @@ const benefits = [
 ];
 
 export default function AuthForm({ type }) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const [fullName, setFullName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(true);
+
   const isLogin = type === "login";
   const isForgot = type === "forgot";
   const title = isForgot ? "Forgot Password?" : isLogin ? "Welcome Back!" : "Create Your Account";
@@ -22,6 +38,101 @@ export default function AuthForm({ type }) {
     : isLogin
       ? "Sign in to continue your fashion journey."
       : "Join Rivaan Garments and start your fashion journey.";
+
+  function cleanPhone(value) {
+    return String(value || "").replace(/[^\d+]/g, "");
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    if (submitting) return;
+
+    const safeEmail = String(email || "").trim();
+    if (!safeEmail) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+
+      if (isForgot) {
+        await sendPasswordResetEmail(auth, safeEmail);
+        setSuccess("Reset link sent. Please check your email.");
+        return;
+      }
+
+      const safePassword = String(password || "");
+      if (!safePassword) {
+        setError("Please enter your password.");
+        return;
+      }
+
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, safeEmail, safePassword);
+        router.push("/profile");
+        return;
+      }
+
+      // Register
+      const safeName = String(fullName || "").trim();
+      if (!safeName) {
+        setError("Please enter your full name.");
+        return;
+      }
+
+      const safeMobile = cleanPhone(mobile);
+      if (!safeMobile) {
+        setError("Please enter your mobile number.");
+        return;
+      }
+
+      if (safePassword.length < 6) {
+        setError("Password must be at least 6 characters.");
+        return;
+      }
+
+      if (safePassword !== String(confirmPassword || "")) {
+        setError("Passwords do not match.");
+        return;
+      }
+
+      if (!termsAccepted) {
+        setError("Please accept Terms & Conditions and Privacy Policy.");
+        return;
+      }
+
+      const credential = await createUserWithEmailAndPassword(auth, safeEmail, safePassword);
+      const user = credential.user;
+
+      // Optional but helpful: displayName
+      await updateProfile(user, { displayName: safeName });
+
+      // Save profile in Firestore (do NOT save password)
+      await setDoc(doc(db, "users", user.uid), {
+        fullName: safeName,
+        mobile: safeMobile,
+        email: safeEmail,
+        role: "customer",
+        isActive: true,
+        createdAt: serverTimestamp()
+      });
+
+      router.push("/profile");
+    } catch (err) {
+      const code = String(err?.code || "");
+      if (code === "auth/email-already-in-use") setError("This email is already registered. Please login.");
+      else if (code === "auth/invalid-email") setError("Please enter a valid email address.");
+      else if (code === "auth/wrong-password" || code === "auth/invalid-credential") setError("Invalid email or password.");
+      else if (code === "auth/weak-password") setError("Please choose a stronger password.");
+      else if (code === "permission-denied") setError("Firestore permission denied. Check Firestore rules for users/{uid}.");
+      else setError(String(err?.message || "Something went wrong. Please try again."));
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <main className="auth-page">
@@ -58,27 +169,52 @@ export default function AuthForm({ type }) {
           <h2>{title} <i>✦</i></h2>
           <p>{subtitle}</p>
         </div>
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           {!isLogin && !isForgot ? (
             <label className="field">
               <UserRound size={18} />
-              <input type="text" placeholder="Full Name" />
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                autoComplete="name"
+              />
             </label>
           ) : null}
           <label className="field">
             <Mail size={18} />
-            <input type="email" placeholder="Email Address" />
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+            />
           </label>
           {!isLogin && !isForgot ? (
             <label className="field">
               <Phone size={18} />
-              <input type="tel" inputMode="numeric" placeholder="Mobile Number" />
+              <input
+                type="tel"
+                inputMode="numeric"
+                placeholder="Mobile Number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                autoComplete="tel"
+              />
             </label>
           ) : null}
           {!isForgot ? (
             <label className="field">
               <Lock size={18} />
-              <input type={showPassword ? "text" : "password"} placeholder="Password" />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete={isLogin ? "current-password" : "new-password"}
+              />
               <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label="Show password">
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -88,18 +224,31 @@ export default function AuthForm({ type }) {
             <>
               <label className="field">
                 <Lock size={18} />
-                <input type={showPassword ? "text" : "password"} placeholder="Confirm Password" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  autoComplete="new-password"
+                />
                 <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label="Show password">
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </label>
               <label className="terms">
-                <input type="checkbox" defaultChecked /> I agree to the Terms & Conditions and Privacy Policy
+                <input
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                />{" "}
+                I agree to the Terms & Conditions and Privacy Policy
               </label>
             </>
           ) : null}
           {isLogin ? <Link className="forgot-link" href="/forgot-password">Forgot Password?</Link> : null}
-          <Button type="button" className="auth-submit">
+          {error ? <p className="auth-msg auth-msg-error" role="alert">{error}</p> : null}
+          {success ? <p className="auth-msg auth-msg-success" role="status">{success}</p> : null}
+          <Button type="submit" className="auth-submit" disabled={submitting} icon={!submitting}>
             {isForgot ? "Send Reset Link" : isLogin ? "Login" : "Create Account"}
           </Button>
         </form>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, ShoppingBag, UserRound, X } from "lucide-react";
 
-const navItems = ["Home", "Men", "Women", "Kids", "New Arrivals", "Sale"];
+const navItems = ["Home", "Men", "Women", "Kids", "New Arrivals", "Sale", "About Us"];
 
 export default function MobileMenu({ open, onClose }) {
   return (
@@ -20,7 +20,13 @@ export default function MobileMenu({ open, onClose }) {
           {navItems.map((item) => (
             <Link
               key={item}
-              href={item === "Home" ? "/" : `/product?filter=${item.toLowerCase().replaceAll(" ", "-")}`}
+              href={
+                item === "Home"
+                  ? "/"
+                  : item === "About Us"
+                    ? "/about"
+                    : `/product?filter=${item.toLowerCase().replaceAll(" ", "-")}`
+              }
               onClick={onClose}
             >
               {item}
