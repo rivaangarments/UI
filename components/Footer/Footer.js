@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="footer-brand">
           <Link href="/" className="brand footer-logo">
             <span className="logo-crop logo-light">
-              <Image src="/images/icons/rivaan-logo.jpg" alt="Rivaan Garments" width={320} height={320} />
+              <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} />
             </span>
           </Link>
           <p>Premium garments crafted for modern Indian wardrobes, festive moments, and elevated everyday style.</p>
