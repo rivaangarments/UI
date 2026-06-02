@@ -21,9 +21,6 @@ export default function Footer() {
         </div>
         <div>
           <h3>Shop</h3>
-          <Link href="/product?filter=men">Men</Link>
-          <Link href="/product?filter=women">Women</Link>
-          <Link href="/product?filter=kids">Kids</Link>
           <Link href="/product?filter=new-arrivals">New Arrivals</Link>
           <Link href="/product?filter=sale">Sale</Link>
         </div>

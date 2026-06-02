@@ -12,9 +12,6 @@ import { auth } from "@/lib/firebase";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Men", href: "/product?filter=men" },
-  { label: "Women", href: "/product?filter=women" },
-  { label: "Kids", href: "/product?filter=kids" },
   { label: "New Arrivals", href: "/product?filter=new-arrivals" },
   { label: "Sale", href: "/product?filter=sale" },
   { label: "About Us", href: "/about" }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, PackageCheck, ShoppingBag, UserRound, X } from "lucide-react";
 
-const navItems = ["Home", "Men", "Women", "Kids", "New Arrivals", "Sale", "About Us"];
+const navItems = ["Home", "New Arrivals", "Sale", "About Us"];
 
 export default function MobileMenu({ open, onClose }) {
   return (
