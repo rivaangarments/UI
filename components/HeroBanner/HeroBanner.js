@@ -6,10 +6,22 @@ import Button from "@/components/Button/Button";
 import { fetchHeroBanners } from "@/lib/firestore/banners";
 
 export default function HeroBanner() {
-  // null = still loading; [] = loaded but empty
-  const [banners, setBanners] = useState(null);
+  const fallback = useMemo(
+    () => ({
+      kicker: "New Collection",
+      title: "Elevate Your",
+      highlight: "Style Everyday",
+      subtitle: "Premium quality garments crafted for comfort, ceremony, and modern confidence.",
+      primaryCtaLabel: "Shop Now",
+      primaryCtaHref: "/product",
+      secondaryCtaLabel: "Explore Collection",
+      secondaryCtaHref: "/product?filter=new-arrivals",
+      image: "/images/banners/hero.svg"
+    }),
+    []
+  );
+  const [banners, setBanners] = useState([fallback]);
   const [active, setActive] = useState(0);
-  const [loadFailed, setLoadFailed] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -17,14 +29,13 @@ export default function HeroBanner() {
       .then((items) => {
         if (!mounted) return;
         const list = Array.isArray(items) ? items : [];
-        setBanners(list);
-        setActive(0);
-        setLoadFailed(false);
+        if (list.length) {
+          setBanners(list);
+          setActive(0);
+        }
       })
       .catch((err) => {
         if (!mounted) return;
-        setBanners([]);
-        setLoadFailed(true);
         // Surface the error in dev so we can verify Firestore + fields quickly.
         if (process.env.NODE_ENV !== "production") {
           // eslint-disable-next-line no-console
@@ -48,20 +59,6 @@ export default function HeroBanner() {
   }, [Array.isArray(banners) ? banners.length : 0]);
 
   const banner = Array.isArray(banners) ? banners[active] || null : null;
-  const fallback = useMemo(
-    () => ({
-      kicker: "New Collection",
-      title: "Elevate Your",
-      highlight: "Style Everyday",
-      subtitle: "Premium quality garments crafted for comfort, ceremony, and modern confidence.",
-      primaryCtaLabel: "Shop Now",
-      primaryCtaHref: "/product",
-      secondaryCtaLabel: "Explore Collection",
-      secondaryCtaHref: "/product?filter=new-arrivals",
-      image: "/images/banners/hero.svg"
-    }),
-    []
-  );
 
   const kicker = banner?.kicker || fallback.kicker;
   const title = banner?.title || fallback.title;
@@ -72,8 +69,7 @@ export default function HeroBanner() {
   const secondaryCtaLabel = banner?.secondaryCtaLabel || fallback.secondaryCtaLabel;
   const secondaryCtaHref = banner?.secondaryCtaHref || fallback.secondaryCtaHref;
 
-  const isLoading = banners === null;
-  const resolvedList = Array.isArray(banners) && banners.length ? banners : loadFailed ? [fallback] : [];
+  const resolvedList = Array.isArray(banners) && banners.length ? banners : [fallback];
 
   return (
     <section className="hero-banner fade-in">
@@ -89,9 +85,7 @@ export default function HeroBanner() {
         </div>
       </div>
       <div className="hero-image">
-        {isLoading ? (
-          <div className="hero-slide is-active hero-skeleton" aria-hidden="true" />
-        ) : resolvedList.map((b, idx) => {
+        {resolvedList.map((b, idx) => {
           const src = b?.image || fallback.image;
           const isSvg = typeof src === "string" && src.toLowerCase().endsWith(".svg");
           const visible = idx === (resolvedList.length ? active : 0);

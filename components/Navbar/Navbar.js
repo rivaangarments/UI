@@ -67,7 +67,7 @@ export default function Navbar() {
         <div className="container nav-inner">
           <Link href="/" className="brand" aria-label="Rivaan Garments home">
             <span className="logo-crop logo-light">
-              <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} priority />
+              <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} priority sizes="210px" />
             </span>
           </Link>
           <nav className="desktop-nav">

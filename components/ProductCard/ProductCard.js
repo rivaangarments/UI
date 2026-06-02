@@ -9,7 +9,7 @@ import { addToCart } from "@/lib/cart/cartStorage";
 import { getWishlistItems, onWishlistChange, toggleWishlist } from "@/lib/wishlist/wishlistStorage";
 import { auth } from "@/lib/firebase";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, priority = false }) {
   const router = useRouter();
   const hasDiscount = Number(product.price || 0) > Number(product.offerPrice || 0);
   const discountPct = hasDiscount
@@ -38,7 +38,14 @@ export default function ProductCard({ product }) {
   return (
     <article className="product-card fade-in">
       <Link className="product-media" href={href}>
-        <Image src={product.image} alt={product.name} width={420} height={500} />
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={420}
+          height={500}
+          priority={priority}
+          sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 240px"
+        />
         {product.tag ? <span className="product-tag">{String(product.tag).toUpperCase()}</span> : null}
       </Link>
       <button

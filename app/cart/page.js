@@ -47,7 +47,7 @@ export default function CartPage() {
                     className="cart-item"
                     key={`${String(item.id)}::${String(item.selectedColor || "")}::${String(item.selectedSize || "")}`}
                   >
-                    <Image src={item.image} alt={item.name} width={118} height={132} />
+                    <Image src={item.image} alt={item.name} width={118} height={132} sizes="118px" />
                     <div>
                       <h3>{item.name}</h3>
                       <p>

@@ -260,7 +260,13 @@ export default function OrderDetailsPage() {
                   <div className="order-items-list">
                     {items.map((item, index) => (
                       <article className="order-product-row" key={`${String(item.id)}-${index}`}>
-                        <Image src={item.image || "/images/products/polo.svg"} alt={item.name || "Product"} width={78} height={86} />
+                        <Image
+                          src={item.image || "/images/products/polo.svg"}
+                          alt={item.name || "Product"}
+                          width={78}
+                          height={86}
+                          sizes="78px"
+                        />
                         <div>
                           <h3>{item.name || "Product"}</h3>
                           <p>

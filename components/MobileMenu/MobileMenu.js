@@ -13,7 +13,7 @@ export default function MobileMenu({ open, onClose }) {
         </button>
         <div className="mobile-logo">
           <span className="logo-crop logo-light">
-            <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} />
+            <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} sizes="220px" />
           </span>
         </div>
         <nav>

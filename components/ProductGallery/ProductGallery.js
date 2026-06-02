@@ -46,7 +46,14 @@ export default function ProductGallery({ product }) {
   return (
     <div className="product-gallery">
       <div className="gallery-main">
-        <Image src={activeSrc} alt={product.name} width={720} height={860} priority />
+        <Image
+          src={activeSrc}
+          alt={product.name}
+          width={720}
+          height={860}
+          priority
+          sizes="(max-width: 980px) 100vw, 50vw"
+        />
       </div>
       <div className="gallery-thumbs">
         {(product.gallery || [product.image]).filter(Boolean).map((image) => (
@@ -58,7 +65,13 @@ export default function ProductGallery({ product }) {
             }}
             aria-label={`View ${product.name} image`}
           >
-            <Image src={isRemoteOrLocalUrl(image) ? image : "/images/products/polo.svg"} alt="" width={96} height={112} />
+            <Image
+              src={isRemoteOrLocalUrl(image) ? image : "/images/products/polo.svg"}
+              alt=""
+              width={96}
+              height={112}
+              sizes="96px"
+            />
           </button>
         ))}
       </div>
