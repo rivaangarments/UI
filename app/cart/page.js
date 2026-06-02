@@ -119,7 +119,7 @@ export default function CartPage() {
                   <b>₹{total.toLocaleString("en-IN")}</b>
                 </p>
                 <small className="save-note">You save ₹{discount.toLocaleString("en-IN")} on this order</small>
-                <Button href="/profile" variant="gold">
+                <Button href="/checkout" variant="gold">
                   Proceed to Checkout
                 </Button>
                 <div className="secure-row">

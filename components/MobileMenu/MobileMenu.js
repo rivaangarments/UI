@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, ShoppingBag, UserRound, X } from "lucide-react";
+import { Heart, PackageCheck, ShoppingBag, UserRound, X } from "lucide-react";
 
 const navItems = ["Home", "Men", "Women", "Kids", "New Arrivals", "Sale", "About Us"];
 
@@ -39,6 +39,9 @@ export default function MobileMenu({ open, onClose }) {
           </Link>
           <Link href="/cart" onClick={onClose}>
             <ShoppingBag size={18} /> Cart
+          </Link>
+          <Link href="/orders" onClick={onClose}>
+            <PackageCheck size={18} /> Orders
           </Link>
           <Link href="/profile" onClick={onClose}>
             <UserRound size={18} /> Profile

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
+import { Heart, Menu, PackageCheck, Search, ShoppingBag, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import MobileMenu from "@/components/MobileMenu/MobileMenu";
 import { getCartCount, onCartChange } from "@/lib/cart/cartStorage";
@@ -57,10 +57,10 @@ export default function Navbar() {
     <>
       <div className="announcement-bar">
         <div className="container announcement-inner">
-          <span>Free shipping on orders above ₹999</span>
+          <span>Free shipping on orders above Rs. 999</span>
           <span>Easy returns</span>
           <span>Cash on Delivery</span>
-          <Link href="/profile">Track Order</Link>
+          <Link href="/orders">Track Order</Link>
         </div>
       </div>
       <header className="navbar">
@@ -83,6 +83,9 @@ export default function Navbar() {
             </Link>
             <Link className="nav-icon" href="/profile" aria-label="Profile">
               <UserRound size={20} />
+            </Link>
+            <Link className="nav-icon" href="/orders" aria-label="Orders">
+              <PackageCheck size={20} />
             </Link>
             <Link className="nav-icon cart-badge" href="/wishlist" aria-label="Wishlist">
               <Heart size={20} />
