@@ -232,6 +232,53 @@
   gap: 14px;
 }
 
+.saved-address-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.saved-address-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 96px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 13px;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.saved-address-card.is-selected {
+  border-color: rgba(212, 169, 90, 0.72);
+  background: rgba(248, 245, 239, 0.86);
+  box-shadow: 0 10px 24px rgba(20, 15, 8, 0.07);
+}
+
+.saved-address-card input {
+  margin-top: 3px;
+  accent-color: var(--color-gold-dark);
+}
+
+.saved-address-card b,
+.saved-address-card small {
+  display: block;
+}
+
+.saved-address-card b {
+  color: var(--color-black);
+}
+
+.saved-address-card small {
+  margin-top: 5px;
+  line-height: 1.45;
+}
+
 .checkout-field {
   display: grid;
   gap: 7px;
@@ -414,7 +461,8 @@
   }
 
   .checkout-form-grid,
-  .payment-options {
+  .payment-options,
+  .saved-address-list {
     grid-template-columns: 1fr;
   }
 

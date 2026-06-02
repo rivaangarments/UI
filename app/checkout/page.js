@@ -11,7 +11,8 @@ import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { getCartCount, getCartItems, setCartItems } from "@/lib/cart/cartStorage";
-import { calculateOrderTotals, createOrder } from "@/lib/firestore/orders";
+import { calculateOrderTotals, createOrder, fetchUserOrders } from "@/lib/firestore/orders";
+import { isUsableAddress, normalizeAddress, normalizeSavedAddresses, saveUserAddress } from "@/lib/firestore/addresses";
 
 const initialAddress = {
   fullName: "",
@@ -33,6 +34,8 @@ export default function CheckoutPage() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [address, setAddress] = useState(initialAddress);
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState("new");
   const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(true);
@@ -56,14 +59,37 @@ export default function CheckoutPage() {
       try {
         const snap = await getDoc(doc(db, "users", currentUser.uid));
         const data = snap.exists() ? snap.data() : null;
+        const profileFallback = {
+          fullName: data?.fullName || currentUser.displayName || "",
+          mobile: data?.mobile || ""
+        };
+        const saved = normalizeSavedAddresses(data?.addresses);
+        let orders = [];
+        if (!saved.length) {
+          try {
+            orders = await fetchUserOrders(currentUser.uid);
+          } catch {
+            orders = [];
+          }
+        }
+        const latestOrderAddress = normalizeAddress(orders.find((order) => isUsableAddress(order?.shippingAddress))?.shippingAddress, profileFallback);
+        const fallbackAddresses = isUsableAddress(latestOrderAddress)
+          ? normalizeSavedAddresses([{ ...latestOrderAddress, label: "Last Used Address" }])
+          : [];
+        const usableAddresses = saved.length ? saved : fallbackAddresses;
+        const defaultAddress =
+          usableAddresses.find((item) => item.id === data?.defaultAddressId) ||
+          usableAddresses[0] ||
+          null;
+
         setProfile(data);
-        setAddress((current) => ({
-          ...current,
-          fullName: current.fullName || data?.fullName || currentUser.displayName || "",
-          mobile: current.mobile || data?.mobile || ""
-        }));
+        setSavedAddresses(usableAddresses);
+        setSelectedAddressId(defaultAddress?.id || "new");
+        setAddress((current) => normalizeAddress(defaultAddress || current, profileFallback));
       } catch {
         setProfile(null);
+        setSavedAddresses([]);
+        setSelectedAddressId("new");
       } finally {
         setLoading(false);
       }
@@ -76,7 +102,14 @@ export default function CheckoutPage() {
   const totals = useMemo(() => calculateOrderTotals(items), [items]);
 
   function updateAddress(field, value) {
+    setSelectedAddressId("new");
     setAddress((current) => ({ ...current, [field]: value }));
+  }
+
+  function selectSavedAddress(nextId) {
+    setSelectedAddressId(nextId);
+    const saved = savedAddresses.find((item) => item.id === nextId);
+    if (saved) setAddress(normalizeAddress(saved));
   }
 
   function validate() {
@@ -130,6 +163,12 @@ export default function CheckoutPage() {
         paymentMethod,
         note
       });
+      try {
+        const nextSavedAddresses = await saveUserAddress(user.uid, address, savedAddresses);
+        setSavedAddresses(nextSavedAddresses);
+      } catch {
+        // The order is already saved. Address persistence is a convenience, not a blocker.
+      }
 
       setCartItems([]);
       setItems([]);
@@ -169,6 +208,47 @@ export default function CheckoutPage() {
                   <MapPin size={21} />
                   <h2>Delivery Address</h2>
                 </div>
+                {savedAddresses.length ? (
+                  <div className="saved-address-list" aria-label="Saved addresses">
+                    {savedAddresses.map((saved) => (
+                      <label className={`saved-address-card ${selectedAddressId === saved.id ? "is-selected" : ""}`} key={saved.id}>
+                        <input
+                          type="radio"
+                          name="savedAddress"
+                          checked={selectedAddressId === saved.id}
+                          onChange={() => selectSavedAddress(saved.id)}
+                        />
+                        <span>
+                          <b>{saved.fullName}</b>
+                          <small>
+                            {saved.line1}
+                            {saved.line2 ? `, ${saved.line2}` : ""}, {saved.city}, {saved.state} {saved.pincode}
+                          </small>
+                          <small>{saved.mobile}</small>
+                        </span>
+                      </label>
+                    ))}
+                    <label className={`saved-address-card ${selectedAddressId === "new" ? "is-selected" : ""}`}>
+                      <input
+                        type="radio"
+                        name="savedAddress"
+                        checked={selectedAddressId === "new"}
+                        onChange={() => {
+                          setSelectedAddressId("new");
+                          setAddress((current) => ({
+                            ...initialAddress,
+                            fullName: current.fullName || profile?.fullName || user?.displayName || "",
+                            mobile: current.mobile || profile?.mobile || ""
+                          }));
+                        }}
+                      />
+                      <span>
+                        <b>Use a new address</b>
+                        <small>Add another delivery address for this order.</small>
+                      </span>
+                    </label>
+                  </div>
+                ) : null}
                 <div className="checkout-form-grid">
                   <label className="checkout-field">
                     <span>Receiver Name</span>

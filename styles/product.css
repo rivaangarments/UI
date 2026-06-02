@@ -1312,16 +1312,24 @@
 
   .status-tracker {
     margin-top: 2px;
+    overflow-x: auto;
     padding-bottom: 4px;
   }
 
   .status-line {
     left: 20px;
-    right: 20px;
+    right: auto;
+    width: 580px;
+  }
+
+  .status-steps {
+    min-width: 620px;
+    gap: 10px;
   }
 
   .status-step {
     font-size: 0.72rem;
+    line-height: 1.15;
   }
 
   .status-step > span {

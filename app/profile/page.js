@@ -13,6 +13,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { setCartItems } from "@/lib/cart/cartStorage";
 import { setWishlistItems } from "@/lib/wishlist/wishlistStorage";
 import { fetchUserOrders } from "@/lib/firestore/orders";
+import { normalizeSavedAddresses } from "@/lib/firestore/addresses";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -70,6 +71,7 @@ export default function ProfilePage() {
   const visibleOrders = activeOrders;
   const latestOrder = orders[0] || null;
   const latestOrderHref = latestOrder ? `/orders/${encodeURIComponent(latestOrder.id)}` : "/product";
+  const savedAddressCount = normalizeSavedAddresses(profile?.addresses).length;
 
   function formatDate(value) {
     const millis = Number(value || 0);
@@ -125,7 +127,7 @@ export default function ProfilePage() {
             </Link>
             <Link className="profile-stat profile-stat-link" href={`${latestOrderHref}#delivery-address`}>
               <MapPin />
-              <span><b>{orders.length ? 1 : 0}</b> Recent Address</span>
+              <span><b>{savedAddressCount || (orders.length ? 1 : 0)}</b> Recent Address</span>
             </Link>
             <Link className="profile-stat profile-stat-link" href={`${latestOrderHref}#payment-details`}>
               <CreditCard />
