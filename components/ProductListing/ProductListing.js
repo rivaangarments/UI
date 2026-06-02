@@ -49,9 +49,6 @@ function titleFromCategory(category) {
   const raw = String(category || "").trim();
   if (!raw) return "All Collections";
   const key = normalize(raw);
-  if (key === "men" || key === "mens") return "Men's Collection";
-  if (key === "women" || key === "womens") return "Women's Collection";
-  if (key === "kids" || key === "kid") return "Kids Collection";
   // Title-case a simple category.
   const nice = raw
     .replace(/[-_]+/g, " ")

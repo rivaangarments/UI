@@ -2,6 +2,7 @@
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 86400,
     // We use a local SVG fallback for the hero banner (and may store SVGs in Firebase).
     // Next/Image blocks SVG optimization by default; allow it explicitly.
     dangerouslyAllowSVG: true,

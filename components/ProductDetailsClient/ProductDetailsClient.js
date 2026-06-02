@@ -206,7 +206,7 @@ export default function ProductDetailsClient({ slug }) {
         // ignore
       }
       const next = goCheckout
-        ? "/cart"
+        ? "/checkout"
         : typeof window !== "undefined"
           ? `${window.location.pathname}${window.location.search}`
           : "/product";
@@ -215,7 +215,7 @@ export default function ProductDetailsClient({ slug }) {
     }
 
     addToCart(payload);
-    router.push("/cart");
+    router.push(goCheckout ? "/checkout" : "/cart");
   }
 
   return (

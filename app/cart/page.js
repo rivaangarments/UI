@@ -47,7 +47,7 @@ export default function CartPage() {
                     className="cart-item"
                     key={`${String(item.id)}::${String(item.selectedColor || "")}::${String(item.selectedSize || "")}`}
                   >
-                    <Image src={item.image} alt={item.name} width={118} height={132} />
+                    <Image src={item.image} alt={item.name} width={118} height={132} sizes="118px" />
                     <div>
                       <h3>{item.name}</h3>
                       <p>
@@ -119,7 +119,7 @@ export default function CartPage() {
                   <b>₹{total.toLocaleString("en-IN")}</b>
                 </p>
                 <small className="save-note">You save ₹{discount.toLocaleString("en-IN")} on this order</small>
-                <Button href="/profile" variant="gold">
+                <Button href="/checkout" variant="gold">
                   Proceed to Checkout
                 </Button>
                 <div className="secure-row">

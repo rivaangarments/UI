@@ -95,8 +95,8 @@ export default function AboutPage() {
                   relationships.
                 </p>
                 <div className="about-meta luxury-panel">
-                  <p><span>Business Name:</span> <b>[Legal Business Name]</b></p>
-                  <p><span>GST Number:</span> <b>[GST Number]</b></p>
+                  <p><span>Business Name:</span> <b>Rivaan Garments India Private Limited</b></p>
+                  <p><span>GST Number:</span> <b>XXXXXXXXX</b></p>
                   <p><span>Registered Address:</span> <b>{BUSINESS_ADDRESS}</b></p>
                   <p><span>Email:</span> <b><a className="about-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></b></p>
                   <p><span>Phone:</span> <b><a className="about-link" href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a></b></p>

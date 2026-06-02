@@ -36,12 +36,12 @@ export default function ProductSection({
   viewAllHref = "/product",
   fallbackProducts = []
 }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!fallbackProducts.length);
   const [products, setProducts] = useState(fallbackProducts);
 
   useEffect(() => {
     let mounted = true;
-    setLoading(true);
+    setLoading(!fallbackProducts.length);
 
     fetchProductsCached()
       .then((items) => {

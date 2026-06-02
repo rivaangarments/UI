@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="footer-brand">
           <Link href="/" className="brand footer-logo">
             <span className="logo-crop logo-light">
-              <Image src="/images/icons/rivaan-logo.jpg" alt="Rivaan Garments" width={320} height={320} />
+              <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} sizes="220px" />
             </span>
           </Link>
           <p>Premium garments crafted for modern Indian wardrobes, festive moments, and elevated everyday style.</p>
@@ -21,9 +21,6 @@ export default function Footer() {
         </div>
         <div>
           <h3>Shop</h3>
-          <Link href="/product?filter=men">Men</Link>
-          <Link href="/product?filter=women">Women</Link>
-          <Link href="/product?filter=kids">Kids</Link>
           <Link href="/product?filter=new-arrivals">New Arrivals</Link>
           <Link href="/product?filter=sale">Sale</Link>
         </div>

@@ -39,6 +39,9 @@ export default function AuthForm({ type }) {
     : isLogin
       ? "Sign in to continue your fashion journey."
       : "Join Rivaan Garments and start your fashion journey.";
+  const nextParam = safeNext(searchParams.get("next"));
+  const loginHref = nextParam ? `/login?next=${encodeURIComponent(nextParam)}` : "/login";
+  const registerHref = nextParam ? `/register?next=${encodeURIComponent(nextParam)}` : "/register";
 
   function cleanPhone(value) {
     return String(value || "").replace(/[^\d+]/g, "");
@@ -172,8 +175,8 @@ export default function AuthForm({ type }) {
         </Link>
         {!isForgot ? (
           <div className="auth-tabs">
-            <Link className={isLogin ? "active" : ""} href="/login">Login</Link>
-            <Link className={!isLogin ? "active" : ""} href="/register">Register</Link>
+            <Link className={isLogin ? "active" : ""} href={loginHref}>Login</Link>
+            <Link className={!isLogin ? "active" : ""} href={registerHref}>Register</Link>
           </div>
         ) : null}
         <div className="auth-heading">
@@ -267,7 +270,7 @@ export default function AuthForm({ type }) {
           <>
             <p className="auth-switch">
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-              <Link href={isLogin ? "/register" : "/login"}>{isLogin ? "Register" : "Login"}</Link>
+              <Link href={isLogin ? registerHref : loginHref}>{isLogin ? "Register" : "Login"}</Link>
             </p>
           </>
         ) : (

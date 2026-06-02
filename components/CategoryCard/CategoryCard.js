@@ -9,7 +9,7 @@ export default function CategoryCard({ category }) {
   return (
     <Link className="category-card fade-in" href={`/product?category=${categorySlug}`}>
       <span className="category-image">
-        <Image src={categoryImage} alt={categoryName} width={124} height={124} />
+        <Image src={categoryImage} alt={categoryName} width={124} height={124} sizes="124px" />
       </span>
       <span>{categoryName}</span>
     </Link>

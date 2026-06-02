@@ -7,7 +7,7 @@ import { auth } from "@/lib/firebase";
 import { addToCart } from "@/lib/cart/cartStorage";
 
 const PUBLIC_PATHS = ["/login", "/register", "/forgot-password"];
-const PROTECTED_PATHS = ["/profile"];
+const PROTECTED_PATHS = ["/profile", "/checkout", "/orders"];
 const PENDING_CART_KEY = "rivaan_pending_cart_add_v1";
 
 function isPublicPath(pathname) {

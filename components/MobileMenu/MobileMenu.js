@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, ShoppingBag, UserRound, X } from "lucide-react";
+import { Heart, PackageCheck, ShoppingBag, UserRound, X } from "lucide-react";
 
-const navItems = ["Home", "Men", "Women", "Kids", "New Arrivals", "Sale", "About Us"];
+const navItems = ["Home", "New Arrivals", "Sale", "About Us"];
 
 export default function MobileMenu({ open, onClose }) {
   return (
@@ -13,7 +13,7 @@ export default function MobileMenu({ open, onClose }) {
         </button>
         <div className="mobile-logo">
           <span className="logo-crop logo-light">
-            <Image src="/images/icons/rivaan-logo.jpg" alt="Rivaan Garments" width={320} height={320} />
+            <Image src="/images/icons/rivaan-logo-light.png" alt="Rivaan Garments" width={320} height={320} sizes="220px" />
           </span>
         </div>
         <nav>
@@ -39,6 +39,9 @@ export default function MobileMenu({ open, onClose }) {
           </Link>
           <Link href="/cart" onClick={onClose}>
             <ShoppingBag size={18} /> Cart
+          </Link>
+          <Link href="/orders" onClick={onClose}>
+            <PackageCheck size={18} /> Orders
           </Link>
           <Link href="/profile" onClick={onClose}>
             <UserRound size={18} /> Profile
