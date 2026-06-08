@@ -96,7 +96,7 @@ export default function AboutPage() {
                 </p>
                 <div className="about-meta luxury-panel">
                   <p><span>Business Name:</span> <b>Rivaan Garments India Private Limited</b></p>
-                  <p><span>GST Number:</span> <b>XXXXXXXXX</b></p>
+                  <p><span>GST Number:</span> <b>08AAPCR8278R1ZZ</b></p>
                   <p><span>Registered Address:</span> <b>{BUSINESS_ADDRESS}</b></p>
                   <p><span>Email:</span> <b><a className="about-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></b></p>
                   <p><span>Phone:</span> <b><a className="about-link" href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a></b></p>
