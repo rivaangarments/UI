@@ -187,12 +187,71 @@ export default function AboutPage() {
               </Section>
 
               <Section id="terms-conditions" title="TERMS &amp; CONDITIONS">
-                <ul className="about-list">
-                  <li>By using this website, customers agree to comply with all applicable laws and regulations.</li>
-                  <li>Product prices, specifications, and availability are subject to change without prior notice.</li>
-                  <li>The company reserves the right to refuse or cancel orders in cases of pricing errors, fraudulent transactions, or policy violations.</li>
-                  <li>All disputes shall be subject to the jurisdiction of courts located in <b>Rajasthan</b>.</li>
-                </ul>
+                <p>
+                  By accessing or using this website, you acknowledge that you have read, understood, and agreed to be
+                  bound by the following Terms &amp; Conditions:
+                </p>
+                <ol className="about-list">
+                  <li>
+                    <b>Compliance with Laws</b>
+                    <p>
+                      Customers and users agree to comply with all applicable laws, regulations, and legal requirements
+                      while using this website and its services.
+                    </p>
+                  </li>
+                  <li>
+                    <b>Product Information</b>
+                    <p>
+                      Product prices, specifications, descriptions, and availability are subject to change at any time
+                      without prior notice.
+                    </p>
+                    <p>
+                      The Company reserves the right to modify, update, or discontinue any product or service without
+                      liability.
+                    </p>
+                  </li>
+                  <li>
+                    <b>Order Acceptance and Cancellation</b>
+                    <p>The Company reserves the right to refuse, reject, or cancel any order at its sole discretion.</p>
+                    <p>Orders may be refused or cancelled in cases including, but not limited to:</p>
+                    <ul>
+                      <li>Pricing or typographical errors;</li>
+                      <li>Incorrect product information;</li>
+                      <li>Suspected fraudulent or unauthorized transactions;</li>
+                      <li>Violation of these Terms &amp; Conditions or Company policies;</li>
+                      <li>Unavailability of products or services.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <b>Governing Law</b>
+                    <p>
+                      These Terms &amp; Conditions shall be governed by and construed in accordance with the laws of
+                      India.
+                    </p>
+                  </li>
+                  <li>
+                    <b>Jurisdiction and Dispute Resolution</b>
+                    <p>Any disputes, claims, controversies, or legal proceedings arising out of or relating to:</p>
+                    <ul>
+                      <li>The use of this website;</li>
+                      <li>Products or services offered by the Company;</li>
+                      <li>Any transaction conducted through the website; or</li>
+                      <li>These Terms &amp; Conditions,</li>
+                    </ul>
+                    <p>
+                      shall be subject to the exclusive jurisdiction of the competent courts located in Jaipur,
+                      Rajasthan, India.
+                    </p>
+                    <p>
+                      By accessing or using this website, you expressly agree to submit to the jurisdiction of the
+                      courts located in Jaipur, Rajasthan, India.
+                    </p>
+                    <p>
+                      You further waive any objection to the venue, jurisdiction, or convenience of such courts in
+                      relation to any dispute arising under these Terms &amp; Conditions.
+                    </p>
+                  </li>
+                </ol>
               </Section>
             </div>
           </div>
